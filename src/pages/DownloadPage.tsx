@@ -241,7 +241,7 @@ export const DownloadPage: React.FC = () => {
       </Helmet>
 
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#071326] via-[#0B1F3A] to-[#08172C] text-white pt-8 pb-20 sm:pb-28 border-b border-slate-800/80">
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#071326] via-[#0B1F3A] to-[#08172C] text-white pt-32 sm:pt-40 pb-20 sm:pb-28 border-b border-slate-800/80">
         {/* Ambient Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[900px] h-[350px] bg-[#F97316]/15 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute top-10 right-10 w-72 h-72 bg-blue-500/10 rounded-full blur-[90px] pointer-events-none" />

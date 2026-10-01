@@ -228,7 +228,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-between relative">
+    <div className="min-h-screen bg-[#071326] flex flex-col justify-between relative text-white">
       {/* SaaS Dynamic Header (Transparent at Top, Floating Capsule when Scrolled) */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
@@ -670,7 +670,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="pt-20 sm:pt-24 flex-grow">
+      <main className="flex-grow">
         {children}
       </main>
     </div>
