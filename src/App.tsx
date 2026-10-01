@@ -1,0 +1,186 @@
+import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/react";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { isElectron } from "@/lib/electron";
+import { DesktopRuntimeSync } from "@/components/desktop/DesktopRuntimeSync";
+import { HelmetProvider } from "react-helmet-async";
+import LandingPage from "./pages/LandingPage";
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import SuperAdminLogin from "./pages/SuperAdminLogin";
+import TenantAdminLogin from "./pages/TenantAdminLogin";
+import CustomerMenu from "./pages/CustomerMenu";
+import KitchenDashboard from "./pages/KitchenDashboard";
+import WaiterDashboard from "./pages/WaiterDashboard";
+import BillingCounter from "./pages/BillingCounter";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminOnboarding from "./pages/AdminOnboarding";
+import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import FeedbackPage from "./pages/FeedbackPage";
+import NotFound from "./pages/NotFound";
+import UserGuide from "./pages/UserGuide";
+import RequestQuote from "./pages/RequestQuote";
+import QRRedirect from "./pages/QRRedirect";
+import RoleGuard from "./components/auth/RoleGuard";
+import { DesktopAppGate } from "./components/desktop/DesktopAppGate";
+import Installer from "./pages/Installer";
+import { ImpersonationBanner } from "./components/superadmin/ImpersonationBanner";
+
+// SEO Landing Pages
+import MenuOCR from "./pages/landing/MenuOCR";
+import RestaurantMenuManagement from "./pages/landing/RestaurantMenuManagement";
+import DigitalMenuSoftware from "./pages/landing/DigitalMenuSoftware";
+import RestaurantOCR from "./pages/landing/RestaurantOCR";
+import AIFoodImages from "./pages/landing/AIFoodImages";
+import QRMenuGenerator from "./pages/landing/QRMenuGenerator";
+
+// Blog
+import BlogIndex from "./pages/blog/BlogIndex";
+import BlogPost from "./pages/blog/BlogPost";
+
+// Legal & Company
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfService from "./pages/legal/TermsOfService";
+import CookiePolicy from "./pages/legal/CookiePolicy";
+import AboutUs from "./pages/landing/AboutUs";
+import Careers from "./pages/landing/Careers";
+import Features from "./pages/landing/Features";
+import GuestExperience from "./pages/landing/GuestExperience";
+
+const queryClient = new QueryClient();
+
+import { ErrorBoundary } from "./components/ErrorBoundary";
+
+// Redirect from ashnora.ind.in to www.ashnora.ind.in
+if (typeof window !== "undefined" && 
+    window.location.hostname === "ashnora.ind.in") {
+  window.location.replace(`https://www.ashnora.ind.in${window.location.pathname}${window.location.search}`);
+}
+
+const isDesktopApp = isElectron() || (typeof window !== "undefined" && window.location.protocol === "file:");
+const AppRouter = isDesktopApp ? HashRouter : BrowserRouter;
+
+const App = () => (
+  <ErrorBoundary>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <DesktopRuntimeSync />
+          <ImpersonationBanner />
+          <Toaster />
+          <Sonner />
+          <Analytics />
+          <AppRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={isDesktopApp ? <Index /> : <LandingPage />} />
+              <Route path="/index.html" element={isDesktopApp ? <Index /> : <LandingPage />} />
+              <Route path="/roles" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/super-admin/login" element={<SuperAdminLogin />} />
+              <Route path="/admin/login" element={<TenantAdminLogin />} />
+              <Route path="/tenant-admin/login" element={<TenantAdminLogin />} />
+              <Route path="/customer-menu" element={<ErrorBoundary><CustomerMenu /></ErrorBoundary>} />
+              <Route path="/order" element={<ErrorBoundary><CustomerMenu /></ErrorBoundary>} />
+              <Route path="/menu" element={<ErrorBoundary><CustomerMenu /></ErrorBoundary>} />
+              <Route path="/feedback" element={<FeedbackPage />} />
+              <Route path="/guide" element={<UserGuide />} />
+              <Route path="/request-quote" element={<RequestQuote />} />
+              <Route path="/r/:id" element={<QRRedirect />} />
+              <Route path="/installer" element={<Installer />} />
+              <Route path="/setup" element={<Installer />} />
+
+              {/* SEO Landing Routes */}
+              <Route path="/ai-menu-ocr" element={<MenuOCR />} />
+              <Route path="/menu-management" element={<RestaurantMenuManagement />} />
+              <Route path="/digital-menu" element={<DigitalMenuSoftware />} />
+              <Route path="/restaurant-ocr" element={<RestaurantOCR />} />
+              <Route path="/ai-food-images" element={<AIFoodImages />} />
+              <Route path="/qr-generator" element={<QRMenuGenerator />} />
+
+              {/* Blog Routes */}
+              <Route path="/blog" element={<BlogIndex />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+
+              {/* Company & Legal Routes */}
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/features" element={<Features />} />
+              <Route path="/guest-experience" element={<GuestExperience />} />
+              <Route path="/contact-sales" element={<RequestQuote />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+
+            {/* Staff routes — role-guarded + Desktop App Gate */}
+            <Route path="/kitchen" element={
+              <RoleGuard allowedRoles={['kitchen_staff', 'restaurant_admin']}>
+                <DesktopAppGate featureName="Kitchen Display System (KDS)">
+                  <ErrorBoundary><KitchenDashboard /></ErrorBoundary>
+                </DesktopAppGate>
+              </RoleGuard>
+            } />
+            <Route path="/waiter" element={
+              <RoleGuard allowedRoles={['waiter_staff', 'restaurant_admin']}>
+                <DesktopAppGate featureName="Waiter Ordering Station">
+                  <ErrorBoundary><WaiterDashboard /></ErrorBoundary>
+                </DesktopAppGate>
+              </RoleGuard>
+            } />
+            <Route path="/billing" element={
+              <RoleGuard allowedRoles={['billing_staff', 'restaurant_admin']}>
+                <DesktopAppGate featureName="POS & Billing Counter">
+                  <ErrorBoundary><BillingCounter /></ErrorBoundary>
+                </DesktopAppGate>
+              </RoleGuard>
+            } />
+
+            {/* Admin routes — role-guarded + Desktop App Gate */}
+            <Route path="/admin" element={
+              <RoleGuard allowedRoles={['restaurant_admin']}>
+                <DesktopAppGate featureName="Restaurant Admin Operations">
+                  <ErrorBoundary><AdminDashboard /></ErrorBoundary>
+                </DesktopAppGate>
+              </RoleGuard>
+            } />
+            <Route path="/admin/onboarding" element={
+              <RoleGuard allowedRoles={['restaurant_admin']}>
+                <DesktopAppGate featureName="Restaurant Onboarding Setup">
+                  <ErrorBoundary><AdminOnboarding /></ErrorBoundary>
+                </DesktopAppGate>
+              </RoleGuard>
+            } />
+            <Route path="/super-admin" element={
+              <RoleGuard allowedRoles={['super_admin']}>
+                <ErrorBoundary><SuperAdminDashboard /></ErrorBoundary>
+              </RoleGuard>
+            } />
+            <Route path="/super_admin" element={
+              <RoleGuard allowedRoles={['super_admin']}>
+                <ErrorBoundary><SuperAdminDashboard /></ErrorBoundary>
+              </RoleGuard>
+            } />
+
+            {/* Catch-all */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AppRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+    </HelmetProvider>
+  </ErrorBoundary>
+);
+
+export default App;
