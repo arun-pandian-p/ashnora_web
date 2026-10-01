@@ -19,9 +19,6 @@ export const DesktopRuntimeSync: React.FC = () => {
     return <DesktopDeactivatedScreen machineId={syncState.machineId} />;
   }
 
-  return (
-    <>
-      <UpdateNotificationBanner latestVersion="1.0.1" />
-    </>
-  );
+  return null;
 };
+
