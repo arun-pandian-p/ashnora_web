@@ -29,6 +29,7 @@ import QRRedirect from "./pages/QRRedirect";
 import RoleGuard from "./components/auth/RoleGuard";
 import { DesktopAppGate } from "./components/desktop/DesktopAppGate";
 import Installer from "./pages/Installer";
+import DownloadPage from "./pages/DownloadPage";
 import { ImpersonationBanner } from "./components/superadmin/ImpersonationBanner";
 
 // SEO Landing Pages
@@ -99,8 +100,10 @@ const App = () => (
               <Route path="/guide" element={<UserGuide />} />
               <Route path="/request-quote" element={<RequestQuote />} />
               <Route path="/r/:id" element={<QRRedirect />} />
-              <Route path="/installer" element={<Installer />} />
-              <Route path="/setup" element={<Installer />} />
+              <Route path="/installer" element={<DownloadPage />} />
+              <Route path="/setup" element={<DownloadPage />} />
+              <Route path="/download" element={<DownloadPage />} />
+              <Route path="/downloads" element={<DownloadPage />} />
 
               {/* SEO Landing Routes */}
               <Route path="/ai-menu-ocr" element={<MenuOCR />} />

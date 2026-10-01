@@ -186,7 +186,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
           id: 'demo_section',
           title: 'DEMO',
           items: [
-            { name: 'Download free-trial', href: '/login' },
+            { name: 'Download Desktop OS', href: '/download' },
             { name: 'Book a Demo', href: '/login' },
           ],
         },

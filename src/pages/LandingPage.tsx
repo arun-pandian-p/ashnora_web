@@ -39,6 +39,12 @@ const LandingPage = () => {
   const [bookDemoOpen, setBookDemoOpen] = useState(false);
 
   useEffect(() => {
+    if (window.location.hash === '#download') {
+      navigate('/download');
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -304,7 +310,7 @@ const LandingPage = () => {
           id: 'demo_section',
           title: 'DEMO',
           items: [
-            { name: 'Download free-trial', href: '#download', action: 'trial' },
+            { name: 'Download Desktop OS', href: '/download' },
             { name: 'Book a Demo', href: '#demo', action: 'demo' },
           ],
         },
