@@ -348,13 +348,22 @@ const LandingPage = () => {
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMenuOpen(false);
+    if (!href || href === '#') return;
+    if (!href.startsWith('#')) {
+      navigate(href);
+      return;
+    }
     if (href === '#hero') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    try {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } catch {
+      // Fallback
     }
   };
 
